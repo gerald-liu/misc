@@ -1,69 +1,82 @@
-#include <iostream>
 #include "state.h"
 
-using namespace std;
+State::State(int h, int w, int b, int t, State* p) : husband{ h }, wife{ w }, boat{ b }, tripNum{ t }, prev{ p } {}
 
-State::State(): husband{'3'}, wife{'3'}, boat{'1'}, tripNum{0}, prev{nullptr}, next{nullptr} {}
-
-State::State(char h, char w, char b, int t, State* p, State** n): husband{h}, wife{w}, boat{b}, tripNum{t}, prev{p}, next{n} {}
-
-State::~State() {
-    if (next != nullptr) {
-        for (int i=0; i<NUM_MOVES; i++) if (next[i] != nullptr) delete next[i];
-        delete[] next;
-    }
+State::~State() { 
+	if (!next.empty()) {
+		for (unsigned int i = 0; i < next.size(); i++) {
+			if (next[i] != nullptr) {
+				delete next[i];
+				next[i] = nullptr;
+			}
+		}
+	}
 }
 
-void State::print() const {
-    if (prev != nullptr) prev->print();
 
-    if (tripNum == 0) cout << "\nSolution:\n";
+void State::print() const {
+	if (prev == nullptr) return;
+	else prev->print();
+
     cout << tripNum << "\t< "  << husband << ", " << wife << ", " << boat << " >\n";
 }
 
-void State::move(bool forth) {
-    State** next = new State* [NUM_MOVES];
 
-    for (int i=0; i<NUM_MOVES; i++) {
-        char husband, wife, boat;
+void State::store(vector<State*>& solution) {
+	if (prev == nullptr) return;
+	else prev->store(solution);
+
+	solution.push_back(this);
+}
+
+void State::move(bool forth, vector<vector<int>>& moves, int numCouples, vector<vector<State*>>& solutions) {
+	int h = 0, w = 0, b = 0;
+	int numMoves = moves.size();
+    for (int i = 0; i < numMoves; i++) {
         if (forth) {
-            husband = this->husband + MOVES[i][0];
-            wife = this->wife + MOVES[i][1];
-            boat = this->boat + '1';
+            h = this->husband - moves[i][0];
+            w = this->wife - moves[i][1];
+            b = this->boat - 1;
         }
         else {
-            husband = this->husband - MOVES[i][0];
-            wife = this->wife - MOVES[i][1];
-            boat = this->boat - '1';
+            h = this->husband + moves[i][0];
+            w = this->wife + moves[i][1];
+            b = this->boat + 1;
         }
         
-        if (!(husband == '0' || husband == '3' || husband == wife)) {
-            next[i] = nullptr;
+        if (h < 0 || h > numCouples || w < 0 || w > numCouples || (h > 0 && h < numCouples && h != w)) {
+			this->next.push_back(nullptr);
             continue;
         }
         
-        next[i] = new State(husband, wife, boat, this->tripNum + 1, this, nullptr);
-        if (husband == '0' && wife == '0' && boat == '0') {
-            next[i]->print();
+        this->next.push_back(new State(h, w, b, this->tripNum + 1, this));
+
+		if (h == 0 && w == 0 && b == 0) {
+			vector<State*> solution;
+			this->next[i]->store(solution);
+			solutions.push_back(solution);
             continue;
         }
-    }
+
+		for (const State* s = this->next[i]->prev; s != nullptr; s = s->prev) {
+			if (s->husband == h && s->wife == w && s->boat == b) {
+				delete this->next[i];
+				this->next[i] = nullptr;
+				break;
+			}
+		}
+	}
 
     bool deadEnd = true;
     int i = 0;
-    for (; i<NUM_MOVES; i++) {
-        if (next[i] != nullptr) {
+    for (; i<numMoves; i++) {
+        if (this->next[i] != nullptr) {
             deadEnd = false;
             break;
         }
     }
-    if (deadEnd) {
-        delete[] next;
-        next = nullptr;
-        return;
-    }
-    else {
-        this->next = next;
-        for (; i<NUM_MOVES; i++) if (next[i] != nullptr) next[i]->move(!forth);
-    }
+    if (deadEnd) return;
+    else for (; i<numMoves; i++)
+		if (this->next[i] != nullptr && !(next[i]->husband == 0 && next[i]->wife == 0 && next[i]->boat == 0))
+			this->next[i]->move(!forth, moves, numCouples, solutions);
 }

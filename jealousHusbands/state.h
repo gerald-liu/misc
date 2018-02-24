@@ -1,21 +1,23 @@
 #ifndef STATE_H
 #define STATE_H
 
-const char MOVES[][2] = {{'1', '0'}, {'0', '1'}, {'2', '0'}, {'0', '2'}, {'1', '1'}};
-const int NUM_MOVES = 5;
+#include <iostream>
+#include <vector>
+
+using namespace std;
 
 class State {
 public:
-    char husband, wife, boat; // number on the wrong side
+    int husband, wife, boat; // number on the wrong side
     int tripNum; // trip number
-    const State *prev; // parent nodes
-    State **next; // children nodes
+    State* prev; // parent nodes
+	vector<State*> next; // children nodes
 
-    State();
-    State(char h, char w, char b, int t, State* p, State** n);
+    State(int h, int w, int b, int t, State* p);
     ~State();
     void print() const;
-    void move(bool forth);
+	void store(vector<State*>& solution);
+    void move(bool forth, vector<vector<int>>& moves, int numCouples, vector<vector<State*>>& solutions);
 };
 
 #endif

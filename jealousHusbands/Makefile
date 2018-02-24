@@ -1,7 +1,7 @@
 # Definition of variables
 SRCS = main.cpp state.cpp
 OBJS = main.o state.o
-PROG = jealousHusbands
+PROG = jh
 CC = g++
 CPPFLAGS = -std=c++11
 LDFLAGS =
