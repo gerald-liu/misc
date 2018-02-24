@@ -1,3 +1,9 @@
+/*	File:	main.cpp
+ *	Author: Gerald Liu
+ *	Date: 	Feb 25, 2018
+ */
+
+
 #include <algorithm>
 #include "state.h"
 

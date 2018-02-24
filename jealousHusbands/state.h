@@ -1,3 +1,8 @@
+/*	File:	state.h
+ *	Author: Gerald Liu
+ *	Date: 	Feb 25, 2018
+ */
+
 #ifndef STATE_H
 #define STATE_H
 

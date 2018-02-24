@@ -1,3 +1,8 @@
+/*	File:	state.cpp
+ *	Author: Gerald Liu
+ *	Date: 	Feb 25, 2018
+ */
+
 #include "state.h"
 
 State::State(int h, int w, int b, int t, State* p) : husband{ h }, wife{ w }, boat{ b }, tripNum{ t }, prev{ p } {}
