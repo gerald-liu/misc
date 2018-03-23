@@ -19,7 +19,7 @@ int main() {
 	Word w1{};	// initialize with default constructor
 	Word w2;	// initialize with default constructor
 
-	//w0.print(); // Compilation Error: request for member 'print' in 'w0', which is of non-class type 'Word ()()'
+    //w0.print(); // Compilation Error: request for member 'print' in 'w0', which is of non-class type 'Word ()'
 	w1.print();
 	w2.print();
 }
