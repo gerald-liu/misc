@@ -14,14 +14,16 @@ public:
 };
 
 int main() {
-	
 	//Word;			// Compilation Error: declaration does not declare anything
 	Word();			// initialization with default constructor, POOR GUY
 	Word w;			// initialization with default constructor
 
 	Word w0();		// function declaration with name "w0" and return type Word
-	Word w1{};		// initialization with default constructor
+	Word w1{};		// initialization with def)ault constructor
 
     //w0.print();	// Compilation Error: request for member 'print' in 'w0', which is of non-class type 'Word ()'
 	w1.print();
+	
+	Word Word();	// function declaration with name "Word" and return type Word; may have other errors
+    //Word.print();	// Compilation Error: request for member 'print' in 'Word', which is of non-class type 'Word ()'
 }
