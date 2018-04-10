@@ -14,7 +14,6 @@ public:
 };
 
 int main() {
-	
 	//Word;			// Compilation Error: declaration does not declare anything
 	Word();			// initialization with default constructor, POOR GUY
 	Word w;			// initialization with default constructor
@@ -24,4 +23,7 @@ int main() {
 
     //w0.print();	// Compilation Error: request for member 'print' in 'w0', which is of non-class type 'Word ()'
 	w1.print();
+	
+	Word Word();	// function declaration with name "Word" and return type Word; may have other errors
+    //Word.print();	// Compilation Error: request for member 'print' in 'Word', which is of non-class type 'Word ()'
 }
