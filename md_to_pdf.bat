@@ -1,7 +1,8 @@
 setlocal
-set "wd=D:\OneDrive - HKUST Connect\Learning_MFin\FINA5120\Homework\HW%1\"
+set "wd=D:\OneDrive - HKUST Connect\Learning\Learning_MFin\FINA5360\Assignments"
 cd %wd%
 for %%f in (*.md) do (
-    if "%%~xf" == ".md" pandoc --pdf-engine=xelatex %%f -o %%~nf.pdf
+    pandoc --pdf-engine=xelatex %%f -o %%~nf.pdf
 )
+pause
 endlocal
